@@ -2,9 +2,7 @@ package pong.model;
 
 import java.util.Random;
 
-import static pong.model.Pong.GAME_HEIGHT;
-import static pong.model.Pong.GAME_WIDTH;
-import static pong.model.Pong.HALF_SEC;
+import static pong.model.Pong.*;
 
 /*
  * A Ball for the Pong game
@@ -88,7 +86,7 @@ public class Ball implements IPositionable {
 
     public void bouncePaddle() {
         if (X + dX <= 5 + Paddle.PADDLE_WIDTH || X + dX >= GAME_WIDTH - WIDTH  - 5 - Paddle.PADDLE_WIDTH) {
-            dX = -dX;
+            dX = -dX * BALL_SPEED_FACTOR;
         }
     }
 }
