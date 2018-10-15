@@ -20,6 +20,10 @@ import pong.event.Event;
 import pong.event.EventService;
 import pong.view.theme.Cool;
 import pong.view.theme.Duckie;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static java.lang.System.out;
@@ -115,14 +119,17 @@ public class PongGUI extends Application {
         renderBackground();
 
         // Build the model
-        Ball ball = new Ball(GAME_WIDTH/2 - Ball.WIDTH/2, GAME_HEIGHT/2 - Ball.HEIGHT/2, Ball.BALL_XSPEED,(rand.nextDouble() * 2 - 1)*Ball.BALL_YSPEED);
+        Ball ball = new Ball(GAME_WIDTH/2 - Ball.WIDTH, GAME_HEIGHT/2 - Ball.HEIGHT);
         Paddle leftPaddle = new Paddle(11, GAME_HEIGHT/2 - Paddle.PADDLE_HEIGHT/2);  // For now
         Paddle rightPaddle = new Paddle(GAME_WIDTH - 11 - Paddle.PADDLE_WIDTH, GAME_HEIGHT/2 - Paddle.PADDLE_HEIGHT/2);
+        Wall Ceiling = new Wall(0);
+        Wall Floor = new Wall(GAME_HEIGHT - 1);
+        List<Wall> walls = Arrays.asList(Floor, Ceiling);
 
         // TODO Construct the model
         //
         // Finally
-        pong = new Pong(ball, leftPaddle, rightPaddle);
+        pong = new Pong(ball, leftPaddle, rightPaddle, walls);
 
         // Map objects to sprites
         assets.bind(ball, assets.ball);

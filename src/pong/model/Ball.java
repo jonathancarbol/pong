@@ -8,85 +8,39 @@ import static pong.model.Pong.*;
  * A Ball for the Pong game
  * A model class
  */
-public class Ball implements IPositionable {
+public class Ball extends AbstractMovable {
+
+    Random rand = new Random();
 
     public static final double WIDTH = 40;
     public static final double HEIGHT = 40;
-    public static double BALL_XSPEED = 4;
+    public static double BALL_XSPEED = 1;
     public static double BALL_YSPEED = 2;
-    private double X;
-    private double Y;
-    private double dX;
-    private double dY;
 
-    public Ball(double x, double y, double dX, double dY) {
-        X = x;
-        Y = y;
-        this.dX = dX;
-        this.dY = dY;
+    public Ball(double x, double y, double height, double width, double dX, double dY) {
+        super(x, y, height, width, dX, dY);
     }
 
-    public double getWidth() {
-        return WIDTH;
+    public Ball(double x, double y) {
+        super(x, y, HEIGHT, WIDTH, BALL_XSPEED, BALL_YSPEED);
+
     }
 
-    public double getHeight() {
-        return HEIGHT;
+    public void move(){
+        setX(getX() + getdX());
+        setY(getY() + getdY());
     }
-
-    @Override
-    public double getX() {
-        return X;
-    }
-
-    @Override
-    public double getY() {
-        return Y;
-    }
-
-    public double getdX() {
-        return dX;
-    }
-
-    public double getdY() {
-        return dY;
-    }
-
-
-    public void setX(double x) {
-        X = x;
-    }
-
-    public void setY(double y) {
-        Y = y;
-    }
-
-
-    public void setdX(double dX) {
-        this.dX = dX;
-    }
-
-    public void setdY(double dY) {
-        this.dY = dY;
-    }
-
-    public void newX() {
-        this.X = this.X + dX*Pong.time;
-    }
-
-    public void newY() {
-        this.Y = this.Y + dY*Pong.time;
-    }
-
+/*
     public void bounceWall() {
-        if (Y + dY <= 0 || Y + dY >= GAME_HEIGHT - HEIGHT) {
-            dY = -dY;
+        if (getY() + getdY() <= 0 || getY() + getdY() >= GAME_HEIGHT - HEIGHT) {
+            setdY(-getdY());
         }
     }
 
     public void bouncePaddle() {
-        if (X + dX <= 5 + Paddle.PADDLE_WIDTH || X + dX >= GAME_WIDTH - WIDTH  - 5 - Paddle.PADDLE_WIDTH) {
-            dX = -dX * BALL_SPEED_FACTOR;
+        if (getX() + getdX() <= 5 + Paddle.PADDLE_WIDTH || getX() + getdX() >= GAME_WIDTH - WIDTH  - 5 - Paddle.PADDLE_WIDTH) {
+            setdX(-getdX() * BALL_SPEED_FACTOR);
         }
     }
+    */
 }

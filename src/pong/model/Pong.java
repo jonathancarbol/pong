@@ -30,29 +30,44 @@ public class Pong {
     private Ball ball;
     private Paddle rightPaddle;
     private Paddle leftPaddle;
+    private List<Wall> walls;
+    private long timeForLastHitWall;
+    private long timeForLastHitPaddle;         // To avoid multiple collisions
 
     //
 
-    public Pong(Ball ball, Paddle leftPaddle, Paddle rightPaddle) {
+    public Pong(Ball ball, Paddle leftPaddle, Paddle rightPaddle, List<Wall> walls) {
         this.pointsLeft = 0;
         this.pointsRight = 0;
-        this.timeForLastHit = HALF_SEC/5;
+        this.timeForLastHitWall = HALF_SEC/5;
+        this.timeForLastHitPaddle = HALF_SEC/5;
         this.ball = ball;
         this.leftPaddle = leftPaddle;
         this.rightPaddle = rightPaddle;
+        this.walls = walls;
     }
 
     // --------  Game Logic -------------
 
-    private long timeForLastHit;         // To avoid multiple collisions
+
 
     public void update(long now) {
-        ball.newX();
-        ball.newY();
-        leftPaddle.newY();
-        rightPaddle.newY();
-        ball.bounceWall();
+        ball.move();
+        leftPaddle.move();
+        rightPaddle.move();
 
+        for (Wall w : walls) {
+            if (ball.intersects(w)){
+                ball.setdY(-ball.getdY());
+            }
+        }
+
+        if(ball.intersects(leftPaddle) || ball.intersects(rightPaddle)){
+            ball.setdX(-ball.getdX() * BALL_SPEED_FACTOR);
+            ball.setdY(ball.getdY() + (rand.nextDouble()*0.5-1));
+        }
+
+/*
         if (leftPaddle.getY() + leftPaddle.getdY() <= ball.getY() + ball.getdY() + Ball.HEIGHT
                 && ball.getY() + ball.getdY() <= leftPaddle.getY() + leftPaddle.getdY() + Paddle.PADDLE_HEIGHT
                 && ball.getX() < GAME_WIDTH/2) {
@@ -64,7 +79,7 @@ public class Pong {
                 && ball.getX() > GAME_WIDTH/2) {
             ball.bouncePaddle();
         }
-
+*/
         //long time = now;
       // TODO Most game logic here, i.e. move paddles etc.
     }
@@ -94,7 +109,7 @@ public class Pong {
     }
 
     public int getPointsRight() {
-        if (ball.getX() < 0 - ball.WIDTH) {
+        if (ball.getX() < 0 - Ball.WIDTH) {
             pointsRight++;
             ball.setX(GAME_WIDTH/2 - Ball.WIDTH/2);
             ball.setY(GAME_HEIGHT/2 - Ball.HEIGHT/2);

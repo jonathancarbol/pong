@@ -1,6 +1,6 @@
 package pong.model;
 
-public class AbstractPositionable {
+public class AbstractPositionable implements IPositionable{
 
     private double X;
     private double Y;
