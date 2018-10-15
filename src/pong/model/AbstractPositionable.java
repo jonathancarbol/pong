@@ -28,7 +28,7 @@ public class AbstractPositionable implements IPositionable{
         boolean above = other.getMaxY() < getY();
         boolean below = other.getY() > getMaxY();
         boolean leftof = other.getMaxX() < getX();
-        boolean rightof = other.getX() > getMaxY();
+        boolean rightof = other.getX() > getMaxX();
 
         return!(above || below || rightof || leftof);
     }

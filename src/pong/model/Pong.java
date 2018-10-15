@@ -39,8 +39,8 @@ public class Pong {
     public Pong(Ball ball, Paddle leftPaddle, Paddle rightPaddle, List<Wall> walls) {
         this.pointsLeft = 0;
         this.pointsRight = 0;
-        this.timeForLastHitWall = HALF_SEC/5;
-        this.timeForLastHitPaddle = HALF_SEC/5;
+        this.timeForLastHitWall = HALF_SEC;
+        this.timeForLastHitPaddle = HALF_SEC;
         this.ball = ball;
         this.leftPaddle = leftPaddle;
         this.rightPaddle = rightPaddle;
@@ -56,15 +56,25 @@ public class Pong {
         leftPaddle.move();
         rightPaddle.move();
 
-        for (Wall w : walls) {
-            if (ball.intersects(w)){
-                ball.setdY(-ball.getdY());
+
+        if (now - timeForLastHitWall > HALF_SEC) {
+            for (Wall w : walls) {
+                if (ball.intersects(w)) {
+                    ball.setdY(-ball.getdY());
+                    timeForLastHitWall = now;
+                }
             }
         }
 
-        if(ball.intersects(leftPaddle) || ball.intersects(rightPaddle)){
-            ball.setdX(-ball.getdX() * BALL_SPEED_FACTOR);
-            ball.setdY(ball.getdY() + (rand.nextDouble()*0.5-1));
+        if (now - timeForLastHitPaddle > HALF_SEC) {
+            if (ball.intersects(leftPaddle) || ball.intersects(rightPaddle)) {
+                EventService.remove();
+                ball.setdX(-ball.getdX() * BALL_SPEED_FACTOR);
+                ball.setdY(ball.getdY() + (rand.nextDouble() * 0.5 - 1));
+                timeForLastHitPaddle = now;
+                Event evt = new Event(Event.Type.BALL_HIT_PADDLE);
+                EventService.add(evt);
+            }
         }
 
 /*
