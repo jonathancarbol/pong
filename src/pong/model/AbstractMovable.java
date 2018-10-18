@@ -1,3 +1,6 @@
+// A super class which includes the size and position
+// of objects from Positionable and additionally handles the x and y speeds.
+
 package pong.model;
 
 public class AbstractMovable extends AbstractPositionable{

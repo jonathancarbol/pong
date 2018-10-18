@@ -1,16 +1,13 @@
 package pong.model;
 
-import java.util.Random;
-
 import static pong.model.Pong.*;
 
 /*
  * A Ball for the Pong game
  * A model class
+ * Includes all information from AbstractPositionable & AbstractMovable.
  */
 public class Ball extends AbstractMovable {
-
-    Random rand = new Random();
 
     public static final double WIDTH = 40;
     public static final double HEIGHT = 40;
@@ -26,21 +23,8 @@ public class Ball extends AbstractMovable {
 
     }
 
-    public void move(){
+    public void move(){         //Moves the ball in X and Y directions.
         setX(getX() + getdX());
         setY(getY() + getdY());
     }
-/*
-    public void bounceWall() {
-        if (getY() + getdY() <= 0 || getY() + getdY() >= GAME_HEIGHT - HEIGHT) {
-            setdY(-getdY());
-        }
-    }
-
-    public void bouncePaddle() {
-        if (getX() + getdX() <= 5 + Paddle.PADDLE_WIDTH || getX() + getdX() >= GAME_WIDTH - WIDTH  - 5 - Paddle.PADDLE_WIDTH) {
-            setdX(-getdX() * BALL_SPEED_FACTOR);
-        }
-    }
-    */
 }

@@ -1,3 +1,6 @@
+// A super class which includes the position and size of objects,
+// and includes a check to see if objects intersect.
+
 package pong.model;
 
 public class AbstractPositionable implements IPositionable{
@@ -16,11 +19,11 @@ public class AbstractPositionable implements IPositionable{
         this.Width = width;
     }
 
-    public double getMaxX() {
+    private double getMaxX() {
         return X + Width;
     }
 
-    public double getMaxY() {
+    private double getMaxY() {
         return Y + Height;
     }
 

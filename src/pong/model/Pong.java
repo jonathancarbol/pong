@@ -20,9 +20,8 @@ public class Pong {
 
     public static final double GAME_WIDTH = 1200;
     public static final double GAME_HEIGHT = 800;
-    public static final double BALL_SPEED_FACTOR = 1.02;
-    public static final long HALF_SEC = 500_000_000;
-    public static final double time = 1.0;
+    private static final double BALL_SPEED_FACTOR = 1.02;
+    private static final long HALF_SEC = 500_000_000;
 
 
     private int pointsLeft;
@@ -31,8 +30,8 @@ public class Pong {
     private Paddle rightPaddle;
     private Paddle leftPaddle;
     private List<Wall> walls;
-    private long timeForLastHitWall;
-    private long timeForLastHitPaddle;         // To avoid multiple collisions
+    private long timeForLastHitWall;            // To avoid multiple collisions
+    private long timeForLastHitPaddle;          // To avoid multiple collisions
 
     //
 
@@ -57,41 +56,25 @@ public class Pong {
         rightPaddle.move();
 
 
-        if (now - timeForLastHitWall > HALF_SEC) {
+        if (now - timeForLastHitWall > HALF_SEC) {          //Avoids multiple collisions on the wall if the update speed isn't fast enough.
             for (Wall w : walls) {
                 if (ball.intersects(w)) {
-                    ball.setdY(-ball.getdY());
+                    ball.setdY(-ball.getdY());              //Ball bounces on wall.
                     timeForLastHitWall = now;
                 }
             }
         }
 
-        if (now - timeForLastHitPaddle > HALF_SEC) {
+        if (now - timeForLastHitPaddle > HALF_SEC) {        //Avoids multiple collisions o the paddle if the update speed isn't fast enough.
             if (ball.intersects(leftPaddle) || ball.intersects(rightPaddle)) {
                 EventService.remove();
-                ball.setdX(-ball.getdX() * BALL_SPEED_FACTOR);
-                ball.setdY(ball.getdY() + (rand.nextDouble() * 0.5 - 1));
+                ball.setdX(-ball.getdX() * BALL_SPEED_FACTOR);              //Ball bounces on paddle and increases in speed.
+                ball.setdY(ball.getdY() + (rand.nextDouble() * 0.5 - 1));   //Makes the ball bounce at a somewhat random angle from the paddle.
                 timeForLastHitPaddle = now;
-                Event evt = new Event(Event.Type.BALL_HIT_PADDLE);
+                Event evt = new Event(Event.Type.BALL_HIT_PADDLE);          //Makes a sound when the ball hits the paddle.
                 EventService.add(evt);
             }
         }
-
-/*
-        if (leftPaddle.getY() + leftPaddle.getdY() <= ball.getY() + ball.getdY() + Ball.HEIGHT
-                && ball.getY() + ball.getdY() <= leftPaddle.getY() + leftPaddle.getdY() + Paddle.PADDLE_HEIGHT
-                && ball.getX() < GAME_WIDTH/2) {
-            ball.bouncePaddle();
-        }
-
-        if (rightPaddle.getY() + rightPaddle.getdY() <= ball.getY() + ball.getdY() + Ball.HEIGHT
-                && ball.getY() + ball.getdY() <= rightPaddle.getY() + leftPaddle.getdY() + Paddle.PADDLE_HEIGHT
-                && ball.getX() > GAME_WIDTH/2) {
-            ball.bouncePaddle();
-        }
-*/
-        //long time = now;
-      // TODO Most game logic here, i.e. move paddles etc.
     }
 
 
@@ -99,7 +82,7 @@ public class Pong {
 
     // --- Used by GUI  ------------------------
 
-    public List<IPositionable> getPositionables() {
+    public List<IPositionable> getPositionables() {         //Creates a list of items to be drawn by the gui.
         List<IPositionable> drawables = new ArrayList<>();
         drawables.add(leftPaddle);
         drawables.add(rightPaddle);
@@ -107,34 +90,34 @@ public class Pong {
         return drawables;
     }
 
-    public int getPointsLeft() {
+    public int getPointsLeft() {                //Adds a point to the player that scored and resets the ball.
         if (ball.getX() > GAME_WIDTH) {
             pointsLeft++;
-            ball.setX(GAME_WIDTH/2 - Ball.WIDTH/2);
-            ball.setY(GAME_HEIGHT/2 - Ball.HEIGHT/2);
-            ball.setdX(-Ball.BALL_XSPEED);
-            ball.setdY((rand.nextDouble() * 2 - 1)*Ball.BALL_YSPEED);
-        }
-        return pointsLeft;
-    }
-
-    public int getPointsRight() {
-        if (ball.getX() < 0 - Ball.WIDTH) {
-            pointsRight++;
             ball.setX(GAME_WIDTH/2 - Ball.WIDTH/2);
             ball.setY(GAME_HEIGHT/2 - Ball.HEIGHT/2);
             ball.setdX(Ball.BALL_XSPEED);
             ball.setdY((rand.nextDouble() * 2 - 1)*Ball.BALL_YSPEED);
         }
+        return pointsLeft;
+    }
+
+    public int getPointsRight() {               //Adds a point to the player that scored and resets the ball.
+        if (ball.getX() < 0 - Ball.WIDTH) {
+            pointsRight++;
+            ball.setX(GAME_WIDTH/2 - Ball.WIDTH/2);
+            ball.setY(GAME_HEIGHT/2 - Ball.HEIGHT/2);
+            ball.setdX(-Ball.BALL_XSPEED);
+            ball.setdY((rand.nextDouble() * 2 - 1)*Ball.BALL_YSPEED);
+        }
         return pointsRight;
     }
 
-    public void setSpeedRightPaddle(double factor) {
+    public void setSpeedRightPaddle(double factor) {        //Determines the direction and speed of the right paddle.
             double paddleSpeed = factor * Paddle.PADDLE_SPEED;
             rightPaddle.setdY(paddleSpeed);
     }
 
-    public void setSpeedLeftPaddle(double factor) {
+    public void setSpeedLeftPaddle(double factor) {         //Determines the direction and speed of the right paddle.
             double paddleSpeed = factor * Paddle.PADDLE_SPEED;
             leftPaddle.setdY(paddleSpeed);
     }

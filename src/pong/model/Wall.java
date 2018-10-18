@@ -1,3 +1,5 @@
+//Innehåller alla funktioner från AbstractPositionable.
+
 package pong.model;
 
 public class Wall extends AbstractPositionable{

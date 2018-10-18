@@ -126,9 +126,7 @@ public class PongGUI extends Application {
         Wall Floor = new Wall(GAME_HEIGHT - 1);
         List<Wall> walls = Arrays.asList(Floor, Ceiling);
 
-        // TODO Construct the model
-        //
-        // Finally
+        // Initialize the game.
         pong = new Pong(ball, leftPaddle, rightPaddle, walls);
 
         // Map objects to sprites
