@@ -130,7 +130,7 @@ public class PongGUI extends Application {
         pong = new Pong(ball, leftPaddle, rightPaddle, walls);
 
         // Map objects to sprites
-        assets.bind(ball, assets.ball);
+        //assets.bind(ball, assets.ball);
         assets.bind(rightPaddle, assets.rightPaddle);
         assets.bind(leftPaddle, assets.leftPaddle);
 
